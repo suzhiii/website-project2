@@ -1,0 +1,653 @@
+/* --- Variables & Basic Reset --- */
+:root {
+    --primary-dark: #0D0D0D; /* Slightly deeper black */
+    --secondary-dark: #1A1A1A; /* Dark gray for cards/modals */
+    --accent-color: #00FFFF; /* CYBER CYAN */
+    --accent-hover: #00B8B8; /* Slightly darker cyan for hover */
+    --text-color: #E0E0E0;
+    --text-muted: #a0a0a0;
+
+    /*  GLOWS */
+    --accent-glow-color: rgba(0, 255, 255, 0.5);
+    --accent-glow-strong: rgba(0, 255, 255, 0.7);
+    --card-shadow: rgba(0, 255, 255, 0.1); /* Subtle cyan glow */
+    --card-hover-shadow: rgba(0, 255, 255, 0.4);
+
+    /*  Glitch Effect */
+    --glitch-color1: #FF00FF; /* Magenta */
+    --glitch-color2: #00FF00; /* Green */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; 
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.5s ease, background-image 0.5s ease;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    /* --- Animated Gradient Background --- */
+    background: linear-gradient(-45deg, #0a0218, #0d0d0d, #0f1224, #05050c);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+}
+
+#tsparticles {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- Page Loader --- */
+#page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-dark); /* Keep solid for loader */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid var(--secondary-dark);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 15px var(--accent-glow-color); /* Spinner glow */
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* --- Header --- */
+header {
+    background-color: rgba(10, 10, 10, 0.6); /* Semi-transparent dark */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3), 0 0 15px var(--accent-glow-color); /* Added subtle bottom glow */
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    animation: fadeInDown 0.5s ease-out;
+    text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-glow-color); /* Logo Glow */
+}
+
+nav .nav-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--accent-color); /* Accent border */
+    padding: 0.6rem 1.2rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    animation: fadeInDown 0.5s ease-out 0.2s backwards;
+    text-shadow: none; /* Reset text shadow */
+}
+
+nav .nav-btn:hover, nav .nav-btn.active-nav {
+    background-color: var(--accent-color);
+    color: var(--primary-dark);
+    border-color: var(--accent-color);
+    transform: translateY(-3px) scale(1.05); /* More lift */
+    box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-glow-color); /* Stronger Hover Glow */
+}
+nav a { text-decoration: none; }
+
+
+/* --- Main Content & Sections --- */
+main {
+    padding: 2rem 5%;
+    flex-grow: 1;
+}
+
+#hero {
+    text-align: center;
+    padding: 4rem 1rem; /* More padding */
+    margin-bottom: 3rem; /* More spacing */
+    border-radius: 12px;
+    background: rgba(18, 18, 18, 0.5); /* Semi-transparent */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    animation: fadeInUp 0.7s ease-out;
+    position: relative; /* For glitch pseudo-elements */
+    overflow: hidden; /* For glitch effect */
+}
+
+#hero h1 {
+    font-size: 3.2rem; /* Slightly larger */
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    text-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-glow-color); /* H1 Glow */
+
+    /* ---  Cyber Glitch Animation --- */
+    position: relative; /* Needed for pseudo-elements */
+    animation: glitch 2.5s infinite steps(1);
+}
+
+/* ---  Glitch Keyframes and Pseudo-elements --- */
+@keyframes glitch {
+  0%, 100% { text-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-glow-color); transform: translate(0, 0); }
+  10% { text-shadow: 2px -2px 0 var(--glitch-color1), -2px 2px 0 var(--glitch-color2), 0 0 8px var(--accent-color); transform: translate(-1px, 1px); }
+  12% { text-shadow: -2px 2px 0 var(--glitch-color1), 2px -2px 0 var(--glitch-color2), 0 0 8px var(--accent-color); transform: translate(1px, -1px); }
+  14%, 30% { text-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-glow-color); transform: translate(0,0); }
+  /* Add more steps for more varied glitch */
+  35% { text-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-glow-color); clip-path: inset(0 0 50% 0); transform: translate(0, 0);}
+  37% { clip-path: inset(50% 0 0 0); transform: translate(-2px, 1px); }
+  39%, 100% { clip-path: inset(0); transform: translate(0,0); }
+}
+
+#hero p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* --- Content Grid & Cards --- */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem; /* Increased gap */
+    animation: fadeInUp 0.7s ease-out 0.4s backwards;
+    perspective: 1500px; /* Add perspective to the container for 3D effect */
+}
+
+.content-card {
+    background-color: rgba(30, 30, 30, 0.7); /* Semi-transparent dark */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+        transition: transform 0.1s linear, box-shadow 0.4s ease; /* Apply a fast linear transition for transform */
+    box-shadow: 0 5px 15px var(--card-shadow), 0 0 10px var(--card-shadow) inset;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.content-card::before {  
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(
+        transparent, transparent, transparent, var(--accent-color)
+    );
+    transform-origin: center center;
+    animation: rotateGradient 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+.content-card:hover::before {
+    opacity: 0.8;  
+    animation-duration: 2s;   
+}
+
+.content-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes rotateGradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.content-card:hover {
+    /* ---  3D Tilt Effect --- */
+    
+    box-shadow: 0 15px 35px var(--card-hover-shadow), /* Outer glow */
+                0 0 25px var(--accent-glow-strong) inset, /* Stronger inner glow */
+                0 0 30px var(--accent-color); /* Aura glow */
+}
+
+.card-icon {
+    /*  size will be controlled by SVG width/height */
+    height: 60px; /* DEFINE height for the container */
+    width: 60px;  /* DEFINE width for the container */
+    margin: 0 auto 1rem auto; /* Adjust margin as needed */
+    line-height: 1;
+    /* text-shadow: 0 0 8px var(--accent-color), 0 0 15px var(--accent-glow-color); 
+    filter: drop-shadow(0 0 5px var(--accent-glow-color)); /* Keep a filter glow */
+    transition: transform 0.3s ease;
+    display: inline-flex; /* Helps center the SVG */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Base styles for SVGs inside card-icon */
+.card-icon svg.card-svg {
+    width: 100%; /* Make SVG fill the container */
+    height: 100%;
+    stroke: var(--accent-color); /* Use accent color for strokes */
+    /* fill: none; Most are fill none, but override below if needed */
+    transition: all 0.3s ease-out; /* Transition for SVG properties */
+}
+
+/* Keep the hover effect on the container (optional) */
+.content-card:hover .card-icon {
+    transform: scale(1.1); /* Keep scale on hover, removed rotate */
+    filter: drop-shadow(0 0 10px var(--accent-color)); /* Enhance glow on hover */
+}
+
+.content-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg); /* Icon animates too */
+}
+
+
+.content-card h2 {
+    font-size: 1.8rem;
+    color: var(--accent-color);
+    margin-bottom: 0.75rem;
+    text-shadow: 0 0 5px var(--accent-glow-color); /* Title glow */
+}
+
+.content-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/*  Base styles for SVGs inside card-icon */
+.card-icon svg.card-svg {
+    width: 100%; /* Make SVG fill the container */
+    height: 100%;
+    stroke: var(--accent-color); /* Use accent color for strokes */
+    /* fill: none; Most are fill none, but override below if needed */
+    transition: all 0.3s ease-out; /* Transition for SVG properties */
+}
+
+/* Keep the hover effect on the container  */
+.content-card:hover .card-icon {
+    transform: scale(1.1); 
+    filter: drop-shadow(0 0 10px var(--accent-color)); /* Enhance glow on hover */
+}
+
+
+/* ---  SVG Icon Animations --- */
+
+/* 1. Pages slightly shift on hover */
+.content-card:hover .svg-fildis .book-left-page {
+    transform-origin: bottom right;
+    transform: rotate(-2deg) translateX(-1px);
+}
+.content-card:hover .svg-fildis .book-right-page {
+    transform-origin: bottom left;
+    transform: rotate(2deg) translateX(1px);
+}
+/* Apply transition to the paths themselves */
+.svg-fildis path {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+}
+
+
+/*  Dots pulse on hover */
+.svg-komfil .bubble-dot {
+    fill: var(--accent-color); /* Ensure dots have color */
+    transform-origin: center center;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0.6;
+}
+@keyframes pulseDots {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.4); opacity: 1; }
+}
+/* Apply pulsing animation to dots on card hover */
+.content-card:hover .svg-komfil .dot1 {
+    animation: pulseDots 1.2s infinite ease-in-out 0s;
+}
+.content-card:hover .svg-komfil .dot2 {
+    animation: pulseDots 1.2s infinite ease-in-out 0.15s; /* Stagger */
+}
+.content-card:hover .svg-komfil .dot3 {
+    animation: pulseDots 1.2s infinite ease-in-out 0.3s; /* Stagger */
+}
+
+
+/*  Lines draw themselves on hover */
+.svg-soslit .file-line {
+    stroke-dasharray: 50; /* A value larger than the line length */
+    stroke-dashoffset: 50; /* Start with the line "dashed off" (invisible) */
+    transition: stroke-dashoffset 0.6s ease-out;
+}
+.content-card:hover .svg-soslit .line1 {
+    stroke-dashoffset: 0; /* Draw line */
+    transition-delay: 0.1s;
+}
+.content-card:hover .svg-soslit .line2 {
+    stroke-dashoffset: 0; /* Draw line */
+    transition-delay: 0.2s; /* Stagger */
+}
+.content-card:hover .svg-soslit .line3 {
+    stroke-dashoffset: 0; /* Draw line */
+    transition-delay: 0s; /* Start first */
+}
+
+/* Optional: Make the fold line subtle */
+.svg-soslit .file-fold {
+    opacity: 0.7;
+}
+
+/* --- Modals --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Darker backdrop */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--secondary-dark);
+    /* --- NEW: Glassmorphism for Modals --- */
+    background: rgba(20, 20, 20, 0.65); /* Dark semi-transparent */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.2); /* Cyan border */
+
+    margin: auto;
+    padding: 25px 30px;
+    width: 85%;
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow-color); /* Glow */
+    position: relative;
+    transform: scale(0.9) translateY(20px); /* Start slightly lower for entry animation */
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease-out; /* Smoother entry */
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal.active .modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.close-button {
+    color: var(--text-muted);
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    transition: color 0.2s ease, transform 0.2s ease;
+    text-shadow: 0 0 5px var(--accent-glow-color);
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--accent-color);
+    transform: scale(1.2);
+}
+
+.modal-content h2 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 0 0 8px var(--accent-glow-color);
+}
+.modal-content p {
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+}
+
+.modules-list {
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+/* Scrollbar styling (optional, futuristic touch) */
+.modules-list::-webkit-scrollbar {
+    width: 8px;
+}
+.modules-list::-webkit-scrollbar-track {
+    background: var(--primary-dark);
+    border-radius: 4px;
+}
+.modules-list::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+.modules-list::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+
+.module-item {
+    background-color: rgba(18, 18, 18, 0.8); /* Darker, semi-transparent */
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid var(--accent-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.module-item:hover {
+    background-color: rgba(30, 30, 30, 0.9);
+    transform: translateX(5px);
+}
+.module-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    flex-grow: 1;
+}
+.module-item .actions button, .module-item .actions a button {
+    background-color: var(--accent-color);
+    color: var(--primary-dark);
+    border: none;
+    padding: 0.5rem 0.8rem;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600; /* Bolder */
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px var(--accent-color);
+}
+.module-item .actions button:hover, .module-item .actions a button:hover {
+    background-color: var(--accent-hover);
+    color: #000;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px var(--accent-color), 0 0 15px var(--accent-glow-strong);
+}
+.module-item .actions a { text-decoration: none; }
+
+.file-viewer {
+    border-top: 1px solid rgba(0, 255, 255, 0.3); /* Cyan border */
+    padding-top: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.file-viewer iframe, .file-viewer img, .file-viewer pre {
+    border: 1px solid rgba(0, 255, 255, 0.3); /* Cyan border */
+    border-radius: 5px;
+    flex-grow: 1;
+    width: 100%;
+}
+.file-viewer .back-to-modules {
+    background-color: rgba(68, 68, 68, 0.7);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.file-viewer .back-to-modules:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-dark);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 2rem 5%;
+    background-color: rgba(10, 10, 10, 0.6); /* Semi-transparent */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* margin-top: 3rem; Adjusted by flex layout */
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+
+/* --- Author Page Specific (assuming it exists) --- */
+#author-info {
+    text-align: center;
+    padding: 2rem 0;
+    animation: fadeInUp 0.7s ease-out;
+}
+#author-info h1 {
+    color: var(--accent-color);
+    text-shadow: 0 0 8px var(--accent-glow-color);
+    margin-bottom: 2rem;
+}
+.author-card {
+    background-color: var(--secondary-dark); /* Could also be glassmorphic */
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 20px var(--accent-glow-color);
+}
+.author-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow-color);
+}
+.author-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+.author-card p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+.social-links a {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.social-links a:hover {
+    text-decoration: none;
+    color: var(--accent-hover);
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px); /* More noticeable entry */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px); /* More noticeable entry */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .logo { font-size: 1.5rem; }
+    nav .nav-btn { padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem; }
+    #hero h1 { font-size: 2.5rem; /* Adjusted glitch hero */ }
+    #hero p { font-size: 1rem; }
+    .content-card { padding: 1.5rem; }
+    .content-card:hover {
+        transform: rotateX(3deg) rotateY(4deg) scale(1.03) translateY(-5px); /* Less extreme tilt on mobile */
+    }
+    .content-card h2 { font-size: 1.5rem; }
+    .modal-content { width: 90%; padding: 20px; }
+    .module-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .module-item .actions { margin-top: 8px; margin-left: 0; }
+}
+
+@media (max-width: 480px) {
+    header { flex-direction: column; gap: 0.5rem; }
+    nav { margin-top: 0.5rem; }
+    #hero h1 { font-size: 2rem; /* Adjusted glitch hero */ }
+    #hero p { font-size: 0.9rem; }
+    .modal-content h2 { font-size: 1.3rem; }
+}
